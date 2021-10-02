@@ -50,6 +50,7 @@ wfLengthLT (x :: xs) with (wfLengthLT xs)
     Left e => MkAcc _ $ \y', ylty => f y' (rewrite (sym e) in ylty)
     Right lt => f y lt
 
+total
 quickSort : Ord a => List a -> List a
 quickSort {a} = wfRec {P = const (List a)} quickSort' wfLengthLT
   where
@@ -60,5 +61,6 @@ quickSort {a} = wfRec {P = const (List a)} quickSort' wfLengthLT
       ++ [x]
       ++ rec (filter (\v => v > x) xs) (LTESucc (filterSmaller _))
 
+total
 example : quickSort [5, 2, 3, 1, 4] = [1, 2, 3, 4, 5]
 example = Refl
