@@ -1,25 +1,27 @@
 module WellFoundedInd
 
+public export
 data Acc : (a -> a -> Type) -> a -> Type where
   MkAcc : {a : Type} -> (x : a) -> ((y : a) -> r y x -> Acc r y) -> Acc r x
 
-total
+
+public export total
 accRec : {P : a -> Type}
       -> ((x : a) -> ((y : a) -> r y x -> P y) -> P x)
       -> {x : a} -> Acc r x -> P x
 accRec rec (MkAcc x f) = rec x $ \y, ryx => accRec rec (f y ryx)
 
-total
+public export total
 wellFounded : (r : a -> a -> Type) -> Type
 wellFounded {a} r = (x : a) -> Acc r x
 
-total
+public export total
 wfRec : {P : a -> Type}
      -> ((x : a) -> ((y : a) -> r y x -> P y) -> P x)
      -> wellFounded r -> (x : a) -> P x
 wfRec rec wf x = accRec rec (wf x)
 
-total
+public export total
 LengthLT : List a -> List a -> Type
 LengthLT xs ys = LT (length xs) (length ys)
 
